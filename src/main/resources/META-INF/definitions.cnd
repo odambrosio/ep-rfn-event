@@ -1,0 +1,26 @@
+<jmix = 'http://www.jahia.org/jahia/mix/1.0'>
+<jnt = 'http://www.jahia.org/jahia/nt/1.0'>
+<mix = 'http://www.jcp.org/jcr/mix/1.0'>
+<rfnmix = 'http://www.rfnmix.jahia.ep.europa.eu'>
+<rfnnt = 'http://www.rfnnt.jahia.ep.europa.eu'>
+
+[rfnnt:epRfnEvent] > rfnnt:epRfnContent, jmix:categorized, jmix:editorialContent, mix:title, rfnmix:epRfnComponent
+ - startDate (date) = now() mandatory indexed=no
+ - endDate (date) mandatory indexed=no
+ - complementaryDate (date) indexed=no
+ - complementaryInfo (string, textarea) internationalized
+ - location (string) internationalized
+ - displayTime (boolean) = 'false' mandatory
+ - sourceLanguage (string, choicelist) indexed=no < 'DE', 'EN', 'FR'
+ - description (string, richtext) mandatory internationalized
+ - rsvp (string)
+ + * (jnt:fileI18nReference, rfnnt:epRfnMultimediaElement)
+
+[rfnnt:epRfnEventSearchResults] > jnt:searchResults, jmix:studioOnly, rfnmix:epRfnComponent
+
+[rfnnt:epRfnEventSearchForm] > jnt:customSearchForm, jmix:studioOnly, rfnmix:epRfnComponent
+ - nodeType (string, choicelist[nodetypes='rfnnt:epRfnEvent']) internationalized indexed=no
+
+[rfnnt:epRfnEventFolder] > jnt:folder, jmix:editorialContent, rfnmix:epRfnComponent
+ + * (rfnnt:epRfnEvent)
+
