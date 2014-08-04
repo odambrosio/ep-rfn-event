@@ -4,23 +4,23 @@
 <rfnmix = 'http://www.rfnmix.jahia.ep.europa.eu'>
 <rfnnt = 'http://www.rfnnt.jahia.ep.europa.eu'>
 
-[rfnnt:epRfnEvent] > rfnnt:epRfnContent, jmix:categorized, jmix:editorialContent, mix:title, rfnmix:epRfnComponent
+[rfnnt:epRfnEventSearchResults] > jnt:searchResults, jmix:studioOnly, rfnmix:epRfnComponent
+
+[rfnnt:epRfnEventSearchForm] > jnt:customSearchForm, jmix:studioOnly, rfnmix:epRfnComponent
+ - nodeType (weakreference, choicelist[nodes='/sites/systemsite/categories/**;rfnnt:epRfnEvent']) indexed=no
+
+[rfnnt:epRfnEvent] > jnt:content, jmix:editorialContent, mix:title, rfnmix:epRfnComponent
  - startDate (date) = now() mandatory indexed=no
  - endDate (date) mandatory indexed=no
  - complementaryDate (date) indexed=no
  - complementaryInfo (string, textarea) internationalized
+  - type (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_types//*;jnt:category']) multiple
+  - tag (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_tags//*;jnt:category']) multiple
  - location (string) internationalized
- - displayTime (boolean) = 'false' mandatory
+ - displayTime (boolean) = 'false' mandatory indexed=no
  - sourceLanguage (string, choicelist) indexed=no < 'DE', 'EN', 'FR'
  - description (string, richtext) mandatory internationalized
  - rsvp (string)
- + * (jnt:fileI18nReference, rfnnt:epRfnMultimediaElement)
-
-[rfnnt:epRfnEventSearchResults] > jnt:searchResults, jmix:studioOnly, rfnmix:epRfnComponent
-
-[rfnnt:epRfnEventSearchForm] > jnt:customSearchForm, jmix:studioOnly, rfnmix:epRfnComponent
- - nodeType (string, choicelist[nodetypes='rfnnt:epRfnEvent']) internationalized indexed=no
-
-[rfnnt:epRfnEventFolder] > jnt:folder, jmix:editorialContent, rfnmix:epRfnComponent
- + * (rfnnt:epRfnEvent)
+ - multimediaTag (string) indexed=no nofulltext
+ + * (jnt:fileI18nReference, rfnnt:epRfnMultimediaElement, rfnnt:epRfnLink, rfnnt:epRfnContact)
 
