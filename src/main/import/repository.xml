@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <content xmlns:j="http://www.jahia.org/jahia/1.0" xmlns:jcr="http://www.jcp.org/jcr/1.0">
     <modules jcr:primaryType="jnt:modules">
-        <ep-rfn-event j:dependencies="default ep-rfn-contact ep-rfn-content search"
+        <ep-rfn-event j:dependencies="default ep-rfn-contact ep-rfn-content facets search"
                     j:modulePriority="0"
                     j:moduleType="module"
                     j:title="EP RFN Event"
@@ -14,6 +14,18 @@
                 <templates j:rootTemplatePath="/base" jcr:primaryType="jnt:templatesFolder">
                     <files jcr:primaryType="jnt:folder"/>
                     <contents jcr:primaryType="jnt:contentFolder"/>
+                    <event-details j:applyOn="rfnnt:epRfnEvent"
+                           j:defaultTemplate="true"
+                           j:hiddenTemplate="false"
+                           jcr:primaryType="jnt:contentTemplate">
+                        <j:translation_en jcr:language="en"
+                                 jcr:mixinTypes="mix:title"
+                                 jcr:primaryType="jnt:translation"
+                                 jcr:title="Event details"/>
+                        <pagecontent jcr:primaryType="jnt:contentList">
+                            <event-main-resource-display j:mainResourceView="default" jcr:primaryType="jnt:mainResourceDisplay"/>
+                        </pagecontent>
+                    </event-details>
                 </templates>
                 
             </ep-rfn-event>

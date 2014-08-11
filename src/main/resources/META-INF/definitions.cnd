@@ -9,13 +9,16 @@
 [rfnnt:epRfnEventSearchForm] > jnt:customSearchForm, jmix:studioOnly, rfnmix:epRfnComponent
  - nodeType (weakreference, choicelist[nodes='/sites/systemsite/categories/**;rfnnt:epRfnEvent']) indexed=no
 
+[rfnnt:epRfnEventFacets] > jnt:facets, rfnmix:epRfnComponent, jmix:studioOnly orderable
+
 [rfnnt:epRfnEvent] > jnt:content, jmix:editorialContent, mix:title, rfnmix:epRfnComponent
  - startDate (date) = now() mandatory indexed=no
  - endDate (date) mandatory indexed=no
  - complementaryDate (date) indexed=no
  - complementaryInfo (string, textarea) internationalized
-  - type (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_types//*;jnt:category']) multiple
-  - tag (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_tags//*;jnt:category']) multiple
+ - type (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_types//*;jnt:category']) multiple
+ - tag (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_tags//*;jnt:category']) multiple
+ - tags (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_tags//*;jnt:category']) multiple
  - location (string) internationalized
  - displayTime (boolean) = 'false' mandatory indexed=no
  - sourceLanguage (string, choicelist) indexed=no < 'DE', 'EN', 'FR'

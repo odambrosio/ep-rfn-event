@@ -110,7 +110,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <Jahia-Depends>default,ep-rfn-contact,ep-rfn-content,search</Jahia-Depends>
+            <Jahia-Depends>default,ep-rfn-contact,ep-rfn-content,facets,search</Jahia-Depends>
           </instructions>
         </configuration>
       </plugin>
