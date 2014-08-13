@@ -24,47 +24,102 @@
 <jcr:nodeProperty node="${currentNode}" name="displayTime" var="eventDisplayTime"/>
 <jcr:nodeProperty node="${currentNode}" name="rsvp" var="eventRsvp"/>
 <jcr:nodeProperty node="${currentNode}" name="description" var="eventDescription"/>
+<jcr:nodeProperty node="${currentNode}" name="multimediaTag" var="eventMultimediaTag"/>
 
 <div class="event-page">
   <div class="row">
+    
+    <!------------ PARTIE GAUCHE ------------>
     <div class="border-right col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      
+      <!-- TITRE -->
       <h2>
         <c:if test="${not empty eventTitle}">
           ${eventTitle.string}
         </c:if>
       </h2>
-      <div class="date">
-<!-- TODO Affichage différent des dates -->
-        <c:if test="${not empty eventStartDate}">
-          <fmt:formatDate pattern="dd.MM.yyyy" value="${eventStartDate.date.time}"/>
+      
+      <!-- DATE -->
+<!-- TODO Quid même heure de début et de fin le même jour ? -->
+      <c:set var="datePattern" value="dd.MM.yyyy" />
+      <c:set var="hourPattern" value="hh:mm" />
+      
+      <c:if test="${not empty eventStartDate}">
+        <c:set var="formattedEventStartDate">
+          <fmt:formatDate pattern="${datePattern}" value="${eventStartDate.date.time}"/>
+        </c:set>
+        <c:set var="formattedEventStartHour">
+          <fmt:formatDate pattern="${hourPattern}" value="${eventStartDate.date.time}"/>
+        </c:set>
+      </c:if>
+      
+      <c:if test="${not empty eventEndDate}">
+        <c:set var="formattedEventEndDate">
+          <fmt:formatDate pattern="${datePattern}" value="${eventEndDate.date.time}"/>
+        </c:set>
+        <c:set var="formattedEventEndHour">
+          <fmt:formatDate pattern="${hourPattern}" value="${eventEndDate.date.time}"/>
+        </c:set>
+      </c:if>
+      
+      <c:set var="sameDate" value="false" />
+      <c:if test="${not empty eventStartDate and not empty eventEndDate}">
+        <c:if test="${formattedEventStartDate == formattedEventEndDate}">
+          <c:set var="sameDate" value="true" />
         </c:if>
-        <c:if test="${not empty eventEndDate}">
+      </c:if>
+      
+      <c:if test="${not empty eventStartDate or not empty eventEndDate}">
+        <div class="date">
           <c:if test="${not empty eventStartDate}">
-            &nbsp;-&nbsp;
+            ${formattedEventStartDate}
+            <c:if test="${sameDate == true}">
+              <c:if test="${not empty eventDisplayTime and eventDisplayTime.boolean == true}">
+                , ${formattedEventStartHour} - ${formattedEventEndHour}
+              </c:if>
+            </c:if>
+            <c:if test="${not empty eventDisplayTime and eventDisplayTime.boolean == true}">
+              <c:if test="${sameDate == false}">
+                &nbsp;${formattedEventStartHour}
+              </c:if>
+            </c:if>
           </c:if>
-          <fmt:formatDate pattern="dd.MM.yyyy" value="${eventEndDate.date.time}"/>
+          <c:if test="${sameDate == false}">
+            <c:if test="${not empty eventEndDate}">
+              <c:if test="${not empty eventStartDate}">
+                &nbsp;-&nbsp;
+              </c:if>
+              ${formattedEventEndDate}
+              <c:if test="${not empty eventDisplayTime and eventDisplayTime.boolean == true}">
+                &nbsp;${formattedEventEndHour}
+              </c:if>
+            </c:if>
+          </c:if>
+        </div>
+      </c:if>
+      
+      <!-- INFORMATIONS COMPLEMENTAIRES -->
+      <div class="complementary">
+        <c:if test="${not empty eventComplementaryInfo}">
+          ${eventComplementaryInfo.string}
+        </c:if>
+        <c:if test="${not empty eventComplementaryDate}">
+          <c:if test="${not empty eventComplementaryInfo}">
+            ,&nbsp;
+          </c:if>
+          <fmt:formatDate pattern="dd.MM.yyyy, hh:mm" value="${eventComplementaryDate.date.time}"/>
         </c:if>
       </div>
-      <c:if test="${not empty eventComplementaryInfo}">
-        ${eventComplementaryInfo.string}
-      </c:if>
-      <c:if test="${not empty eventComplementaryDate}">
-        <c:if test="${not empty eventComplementaryInfo}">
-          ,&nbsp;
-        </c:if>
-        <fmt:formatDate pattern="dd.MM.yyyy, hh:mm" value="${eventComplementaryDate.date.time}"/>
-      </c:if>
+      
+      <!-- LIEU -->
       <div class="place">
         <c:if test="${not empty eventLocation}">
           ${eventLocation.string}
         </c:if>
       </div>
+      
+      <!-- ACTIONS -->
       <div class="event-actions">
-        <a class="btn btn-calendar" href="#">
-          <span>
-            <fmt:message key="label.addToCalendar"/>
-          </span>
-        </a>
         <c:if test="${not empty eventRsvp}">
           <a class="btn btn-mail" href="mailto:${eventRsvp.string}">
             <span>
@@ -72,6 +127,11 @@
             </span>
           </a>
         </c:if>
+        <a class="btn btn-calendar" href="#">
+          <span>
+            <fmt:message key="label.addToCalendar"/>
+          </span>
+        </a>
         <a class="btn btn-external" href="#">
           <span>
             <fmt:message key="label.externalSite"/>
@@ -79,27 +139,70 @@
         </a>
       </div>
       
-<!-- TODO Appliquer le filtre -->
+      <!-- MULTIMEDIA TAG -->
+      <c:if test="${renderContext.editMode}">
+        <c:if test="${not empty eventMultimediaTag}">
+          ${eventMultimediaTag.string}
+        </c:if>
+      </c:if>
+      
+<!-- TODO Appliquer le filtre (pas pour les contacts) -->
+      <!-- DESCRIPTION -->
       <c:if test="${not empty eventDescription}">
         ${eventDescription.string}
       </c:if>
       
-<!-- TODO <c:if test=""> -->
+      <!-- CONTENUS DES SUBNODES -->
+      <!-- FICHIERS ATTACHES -->
       <hr class="dotted">
-      
+      <!-- BOUTONS D'AJOUT DE SUBNODES (EDITION) -->
+      <c:if test="${renderContext.editMode}">
+        <template:module path="*" nodeTypes="jnt:fileI18nReference"/>
+      </c:if>
       <div id="event-attached">
-<!-- TODO Ajout des fichiers attachés, liens, contacts -->
+        <fmt:message key="label.filesAttached"/>
+        <c:forEach items="${currentNode.nodes}" var="child">
+            <template:module node="${child}" view="default" nodeTypes="jnt:fileI18nReference"/>
+        </c:forEach>
       </div>
-      
       <hr class="dotted">
-<!-- TODO </c:if> -->
-     
+      
+      <!-- LIENS DE REFERENCE -->
+      <!-- BOUTONS D'AJOUT DE SUBNODES (EDITION) -->
+      <c:if test="${renderContext.editMode}">
+        <template:module path="*" nodeTypes="rfnnt:epRfnLink"/>
+      </c:if>
+      <div id="event-attached">
+        <fmt:message key="label.referenceLinks"/>
+        <c:forEach items="${currentNode.nodes}" var="child">
+            <template:module node="${child}" view="default" nodeTypes="rfnnt:epRfnLink"/>
+        </c:forEach>
+      </div>
+      <hr class="dotted">
+      
+      <!-- ELEMENTS MULTIMEDIA -->
+      <!-- BOUTONS D'AJOUT DE SUBNODES (EDITION) -->
+      <c:if test="${renderContext.editMode}">
+        <template:module path="*" nodeTypes="rfnnt:epRfnMultimediaElement"/>
+        <div id="event-attached">
+          <fmt:message key="label.multimediaElements"/>
+          <c:forEach items="${currentNode.nodes}" var="child">
+              <template:module node="${child}" view="default" nodeTypes="rfnnt:epRfnMultimediaElement"/>
+          </c:forEach>
+        </div>
+        <hr class="dotted">
+      </c:if>
+      
+      <!-- BOUTON BACK -->
       <a href="javascript:history.go( -1 )" class="back">
-        Return
+        <fmt:message key="label.back"/>
       </a>
     </div>
+    <!------------- FIN PARTIE GAUCHE ------------>
     
+    <!------------- PARTIE DROITE ------------>
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+      <!-- BOUTONS PRINT ET HELP -->
       <div class="sidebar-tools">
         <ul class="tools-top">
           <li>
@@ -117,13 +220,16 @@
             </a>
           </li>
         </ul>
+        
         <div class="content-sidebar-tools">
+          <!-- CATEGORIE -->
           <ul class="tag">
             <li class="title">
               <fmt:message key="label.category"/>
             </li>
             <c:if test="${not empty eventCategory}">
               <li>
+<!-- TODO : Lien de recherche, facet ? -->
                 <a href="#">
                   ${eventCategory.node.displayableName}
                 </a>
@@ -133,6 +239,7 @@
           
           <hr class="dotted">
           
+          <!-- MOTS CLE -->
           <ul class="tag">
             <li class="title">
               <fmt:message key="label.keywords"/>
@@ -140,6 +247,7 @@
             <c:if test="${not empty eventKeywords}">
               <c:forEach items="${eventKeywords}" var="eventKeyword" varStatus="status">
                 <li>
+<!-- TODO : Lien de recherche, facet ? -->
                   <a href="#">
               		${eventKeyword.node.displayableName}
                   </a>
@@ -150,5 +258,6 @@
         </div>
       </div>
     </div>
+    <!------------- FIN PARTIE DROITE ------------>
   </div>
 </div>

@@ -16,8 +16,7 @@
  - endDate (date) mandatory indexed=no
  - complementaryDate (date) indexed=no
  - complementaryInfo (string, textarea) internationalized
- - type (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_types//*;jnt:category']) multiple
- - tag (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_tags//*;jnt:category']) multiple
+ - type (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_types//*;jnt:category'])
  - tags (weakreference, choicelist[nodes='/sites/systemsite/categories/cal_tags//*;jnt:category']) multiple
  - location (string) internationalized
  - displayTime (boolean) = 'false' mandatory indexed=no
@@ -25,5 +24,7 @@
  - description (string, richtext) mandatory internationalized
  - rsvp (string)
  - multimediaTag (string) indexed=no nofulltext
- + * (jnt:fileI18nReference, rfnnt:epRfnMultimediaElement, rfnnt:epRfnLink, rfnnt:epRfnContact)
+ + * (rfnnt:epRfnMultimediaElement)
+ + * (rfnnt:epRfnInternationalizedFile)
+ + * (rfnnt:epRfnLink)
 
